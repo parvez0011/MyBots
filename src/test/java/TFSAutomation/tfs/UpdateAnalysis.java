@@ -36,9 +36,12 @@ public class UpdateAnalysis {
 		String AppUrl=config.get("AppUrl");
 		String uname=config.get("UserName");
 		String pword=config.get("Password");
+		String tPlan=config.get("Testplan");
+		String TestType=config.get("TestType");
 				
 //		String Release="Release 2.1";
 //		String Sprint="Sprint 29";
+		
 		System.setProperty("webdriver.chrome.driver", "src\\test\\resources\\selenium-drivers\\chromedriver.exe"); 
 		
 		driver = new ChromeDriver();
@@ -56,21 +59,46 @@ public class UpdateAnalysis {
 //		
 		driver.findElement(By.xpath(".//span[contains(text(),'Test Plans')]")).click();
 		Thread.sleep(5000);
+		
+		WebElement TestPlanAnchor=driver.findElement(By.xpath(".//div[contains(text(),'"+tPlan+"')]/parent::a"));
+		
+		System.out.println("##### 1"+TestPlanAnchor.getAttribute("aria-expanded"));
+		System.out.println("##### 2"+TestPlanAnchor.getAttribute("aria-expanded").toString());
+		System.out.println("##### 3"+TestPlanAnchor.getAttribute("aria-expanded").equals("false"));
+		
+		
+		if(TestPlanAnchor.getAttribute("aria-expanded").equals("false"))
+		driver.findElement(By.xpath(".//div[contains(text(),'"+tPlan+"')]/span")).click();
+
+		
+WebElement TestingTypeAnchor=driver.findElement(By.xpath(".//div[contains(text(),'"+TestType+"')]/parent::a"));
+				
+		if(TestingTypeAnchor.getAttribute("aria-expanded").equals("false"))
+		driver.findElement(By.xpath(".//div[contains(text(),'"+TestType+"')]/span")).click();
+		
+		
+		WebElement ReleaseAnchor=driver.findElement(By.xpath(".//div[contains(text(),'"+Release+"')]/parent::a"));
+		
+		if(ReleaseAnchor.getAttribute("aria-expanded").equals("false"))
+		driver.findElement(By.xpath(".//div[contains(text(),'"+Release+"')]/span")).click();
+		
+		
 //		List<WebElement> sprint= driver.findElements(By.xpath(".//div[contains(text(),'Release 2.1')]/parent::a/following-sibling::ul/li"));
-		List<WebElement> sprint= driver.findElements(By.xpath(".//div[contains(text(),'"+Release+"')]/parent::a/following-sibling::ul/li"));
+		List<WebElement> sprints= driver.findElements(By.xpath(".//div[contains(text(),'"+Release+"')]/parent::a/following-sibling::ul/li"));
 //		
-		for(WebElement sprintEle : sprint)
+		for(WebElement sprintEle : sprints)
 		{String sprintId=sprintEle.getAttribute("id");
 			String loc=".//li[@id='"+sprintId+"']/a//span";
 			
 			List<WebElement> expand = driver.findElements(By.xpath(".//li[@id='"+sprintId+"']/ul"));
 			
 			if (expand.size()==1)
-				driver.findElement(By.xpath(loc)).click();
+				
 			Thread.sleep(1000);
 			if(Sprint.trim().equalsIgnoreCase(driver.findElement(By.xpath(".//li[@id='"+sprintId+"']/a/div")).getText().trim()))
 			{
 				
+				if (expand.size()!=1)
 			driver.findElement(By.xpath(loc)).click();
 			Thread.sleep(5000);
 			List<WebElement> story = driver.findElements(By.xpath(".//li[@id='"+sprintId+"']/ul/li"));

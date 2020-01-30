@@ -14,7 +14,7 @@ public class Session {
 	static Properties prop = new Properties();
 	static String defaultConfigFile="./Config.properties";
 	static public Map<String, String> _getSessionConfig() {
-        String[] configKeys = {"Release", "Sprint", "AppUrl", "UserName", "Password"};
+        String[] configKeys = {"Release", "Sprint", "AppUrl", "UserName", "Password","Testplan","TestType"};
         Map<String, String> config;
         config = new HashMap<String, String>();
         for (String string : configKeys) {
